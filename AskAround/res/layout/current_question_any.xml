@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@color/blue"
+        android:paddingBottom="20dp"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp"
+        android:paddingTop="20dp"
+        android:text="@string/pick_all_instructions"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/orange"
+        android:gravity="center_horizontal"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/question_any"
+            android:textColor="@color/white" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/question" >
+
+            <CheckBox
+                android:id="@+id/answer_choice_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/answer_choice_1"
+                android:textColor="@color/white" />
+
+            <CheckBox
+                android:id="@+id/answer_choice_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_choice_2"
+                android:textColor="@color/white" />
+
+            <CheckBox
+                android:id="@+id/answer_choice_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/answer_choice_3"
+                android:textColor="@color/white" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/orange"
+        android:gravity="center_horizontal"
+        android:padding="15dp" >
+
+        <EditText
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="@string/comment"
+            android:inputType="textMultiLine"
+            android:padding="3dp" >
+
+            <requestFocus />
+        </EditText>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/blue"
+        android:text="@string/submit_answer"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/skip_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@color/blue"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="@string/skip_this_question"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+</LinearLayout>

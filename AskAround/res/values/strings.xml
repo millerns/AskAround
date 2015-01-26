@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AskAround</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="pick_all_instructions">Pick all you like!</string>
+    <string name="question_any">What ice cream flavor should I get?</string>
+    <string name="answer_choice_1">Vanilla</string>
+    <string name="answer_choice_2">Chocolate</string>
+    <string name="answer_choice_3">Royal Rainbow</string>
+    <string name="comment">Comment</string>
+    <string name="submit_answer">Submit Answer</string>
+    <string name="skip_this_question">Skip This Question</string>
+    <string name="question_comments">What bands are you listening to?</string>
+    <string name="share_opinion_instructions">Share your opinion!</string>
+    <string name="next_question">Next Question!</string>
+    <string name="submit_question">Submit Question</string>
+    <string name="question_type">"Question Type: "</string>
+    <string name="comments_only">Comments only</string>
+    <string name="pick_one_option">Pick one option</string>
+    <string name="pick_any_option">Pick all you like</string>
+    <string name="answer_choices">Answer Choices</string>
+    <string name="add_answer_choice">Add a answer choice</string>
+    <string name="question_active_duration">Question Active duration</string>
+    <string name="one_hour">1 Hour</string>
+    <string name="one_day">1 Day</string>
+    <string name="one_week">1 Week</string>
+    <string name="question_hint">Question</string>
+    <string name="most_recent_results_text">Most Recent</string>
+    <string name="most_responses_results_text">Most Responses</string>
+    <string name="mine">Mine</string>
+    <string name="all">All</string>
+    <string name="app_title">Ask
+        Around</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="register">Register</string>
+    <string name="register_title">Register!</string>
+
+</resources>
