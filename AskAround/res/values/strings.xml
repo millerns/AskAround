@@ -37,5 +37,10 @@
     <string name="log_in">Log In</string>
     <string name="register">Register</string>
     <string name="register_title">Register!</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_specific_results">SpecificResultsActivity</string>
+    <string name="title_activity_create_question">CreateQuestionActivity</string>
+    <string name="title_activity_browse_results">BrowseResultsActivity</string>
 
 </resources>
