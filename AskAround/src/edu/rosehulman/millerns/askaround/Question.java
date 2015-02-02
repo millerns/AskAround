@@ -13,7 +13,9 @@ public class Question implements Parcelable{
 	private ArrayList<String> options;
 	private ArrayList<Integer> votes;
 	private int totalVotes;
+	private ArrayList<String> comments;
 
+	public static final String ALL_QUESTIONS = "all_questions";
 	public static final String QUESTION = "question";
 	
 	public Question(int numberOfAnswers, int dueInDays, String content){
@@ -56,6 +58,10 @@ public class Question implements Parcelable{
 	
 	public ArrayList<Integer> getVotes() {
 		return votes;
+	}
+	
+	public ArrayList<String> getComments() {
+		return comments;
 	}
 
 }

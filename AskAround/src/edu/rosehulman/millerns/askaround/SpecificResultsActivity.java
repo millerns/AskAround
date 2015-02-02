@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 public class SpecificResultsActivity extends Activity {
 	private SingleChoiceQuestionResultViewAdapter questionResultAdapter;
-	private ArrayList<Question> mQuestions;
+	private Question mQuestion;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +21,8 @@ public class SpecificResultsActivity extends Activity {
 		ListView questionResultListView = (ListView) findViewById(R.id.specific_result_list_view);
 		
 		Intent intent = getIntent();
-		mQuestions = intent.getParcelableArrayListExtra(Question.QUESTION);
-		questionResultAdapter = new SingleChoiceQuestionResultViewAdapter(this, mQuestions);
+		mQuestion = intent.getParcelableExtra(Question.QUESTION);
+		questionResultAdapter = new SingleChoiceQuestionResultViewAdapter(this, mQuestion);
 		questionResultListView.setAdapter(questionResultAdapter);
 		
 		

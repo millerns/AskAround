@@ -8,17 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-public class SingleChoiceQuestionResultViewAdapter extends ArrayAdapter<Question> {
+public class SingleChoiceQuestionResultViewAdapter extends ArrayAdapter<String> {
 	
 	private Context mContext;
-	private ArrayList<Question> mQuestions;
-	private int optionAt;
+	private Question mQuestion;
 
-	public SingleChoiceQuestionResultViewAdapter(Context context, ArrayList<Question> questions) {
-		super(context, R.layout.activity_specific_results);
+	public SingleChoiceQuestionResultViewAdapter(Context context, Question question) {
+		super(context, R.layout.single_choice_row_view);
 		mContext = context;
-		mQuestions = questions;
-		optionAt = 0;
+		mQuestion = question;
 	}
 	
 	@Override
@@ -32,8 +30,8 @@ public class SingleChoiceQuestionResultViewAdapter extends ArrayAdapter<Question
 			rowView = (SingleChoiceQuestionResultRowView) convertView;
 		}
 		
-		rowView.setOption(mQuestions.get(position).getQuestionOptions().get(optionAt));
-		rowView.setProgressBar(mQuestions.get(position).getVotes().get(optionAt), mQuestions.get(position).getTotalVotes());		
+		rowView.setOption(mQuestion.getQuestionOptions().get(position));
+		rowView.setProgressBar(mQuestion.getVotes().get(position), mQuestion.getTotalVotes());
 		return rowView;
 		
 	}

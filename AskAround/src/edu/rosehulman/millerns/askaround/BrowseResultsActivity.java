@@ -23,7 +23,7 @@ public class BrowseResultsActivity extends Activity {
 		
 		Intent intent = getIntent();
 		
-		mQuestions = intent.getParcelableArrayListExtra(Question.QUESTION);
+		mQuestions = intent.getParcelableArrayListExtra(Question.ALL_QUESTIONS);
 		adapter = new BrowseResultsViewAdapter(this, mQuestions);
 		listView.setAdapter(adapter);
 	}

@@ -14,7 +14,7 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 	
 
 	public BrowseResultsViewAdapter(Context context, ArrayList<Question> questions) {
-		super(context, android.R.layout.browser_link_context_header);
+		super(context, R.layout.browse_results_row);
 		mContext = context;
 		mQuestions = questions;		
 	}
