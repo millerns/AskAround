@@ -40,10 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/orange"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
 
         <ListView
-            android:id="@+id/results_list_view"
+            android:id="@+id/browse_results_list_view"
             android:layout_width="match_parent"
             android:layout_height="200dp" >
         </ListView>
