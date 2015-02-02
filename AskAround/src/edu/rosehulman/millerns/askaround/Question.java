@@ -1,5 +1,7 @@
 package edu.rosehulman.millerns.askaround;
 
+import java.util.ArrayList;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,11 +10,11 @@ public class Question implements Parcelable{
 	private int numOfAnswers;
 	private int dueInDays;
 	private String content;
-	public static final String QUESTION_CONTENT = "question_content";
-	public static final String QUESTION_DUETIME = "question_duetime";
-	public static final String QUESTION_HOTNESS = "question_hotness";
+	private ArrayList<String> options;
+	private ArrayList<Integer> votes;
+	private int totalVotes;
+
 	public static final String QUESTION = "question";
-	
 	
 	public Question(int numberOfAnswers, int dueInDays, String content){
 		this.numOfAnswers = numberOfAnswers;
@@ -31,6 +33,10 @@ public class Question implements Parcelable{
 	public String getQuestionContent() {
 		return content;
 	}
+	
+	public ArrayList<String> getQuestionOptions() {
+		return options;
+	}
 
 	@Override
 	public int describeContents() {
@@ -42,6 +48,14 @@ public class Question implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public int getTotalVotes() {
+		return totalVotes;
+	}
+	
+	public ArrayList<Integer> getVotes() {
+		return votes;
 	}
 
 }

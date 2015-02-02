@@ -14,7 +14,7 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 	
 
 	public BrowseResultsViewAdapter(Context context, ArrayList<Question> questions) {
-		super(context, android.R.layout.browser_link_context_header, questions);
+		super(context, android.R.layout.browser_link_context_header);
 		mContext = context;
 		mQuestions = questions;		
 	}
@@ -23,7 +23,7 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		BrowseResultsRowView rowView;
-		if(convertView == null) {
+		if (convertView == null) {
 			rowView = new BrowseResultsRowView(mContext);
 		} else {
 			rowView = (BrowseResultsRowView) convertView;

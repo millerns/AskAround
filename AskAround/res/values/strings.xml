@@ -45,5 +45,6 @@
     <string name="sample_question">Sample question</string>
     <string name="three_days">3 days</string>
     <string name="_300">300</string>
+    <string name="option">Option</string>
 
 </resources>
