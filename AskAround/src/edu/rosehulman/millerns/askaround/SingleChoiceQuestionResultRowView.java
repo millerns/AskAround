@@ -1,6 +1,7 @@
 package edu.rosehulman.millerns.askaround;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,7 +14,7 @@ public class SingleChoiceQuestionResultRowView extends LinearLayout {
 
 	public SingleChoiceQuestionResultRowView(Context context) {
 		super(context);
-		
+		LayoutInflater.from(context).inflate(R.layout.single_choice_row_view, this);
 		option = (TextView) findViewById(R.id.question_option);
 		progressBar = (ProgressBar) findViewById(R.id.question_option_progressbar);
 	}

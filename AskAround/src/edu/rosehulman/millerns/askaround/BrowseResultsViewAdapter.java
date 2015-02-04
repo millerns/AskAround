@@ -2,6 +2,7 @@ package edu.rosehulman.millerns.askaround;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,14 +15,13 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 	
 
 	public BrowseResultsViewAdapter(Context context, ArrayList<Question> questions) {
-		super(context, R.layout.browse_results_row);
+		super(context, R.layout.browse_results_row, questions);
 		mContext = context;
-		mQuestions = questions;		
+		mQuestions = questions;	
 	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		BrowseResultsRowView rowView;
 		if (convertView == null) {
 			rowView = new BrowseResultsRowView(mContext);

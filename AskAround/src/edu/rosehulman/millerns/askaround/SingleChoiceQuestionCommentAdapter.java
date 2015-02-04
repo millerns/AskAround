@@ -9,12 +9,13 @@ import android.widget.ArrayAdapter;
 
 public class SingleChoiceQuestionCommentAdapter extends ArrayAdapter<String> {
 	private Context mContext;
-	private Question mQuestion;
+	//private Question mQuestion;
+	private ArrayList<String> mComments;
 
-	public SingleChoiceQuestionCommentAdapter(Context context, Question question) {
-		super(context, R.layout.single_choice_comment);
+	public SingleChoiceQuestionCommentAdapter(Context context, ArrayList<String> comments) {
+		super(context, R.layout.single_choice_comment, comments);
 		mContext = context;
-		mQuestion = question;
+		mComments = comments;
 	}
 	
 	@Override
@@ -27,7 +28,7 @@ public class SingleChoiceQuestionCommentAdapter extends ArrayAdapter<String> {
 			rowView = (SingleChoiceQuestionCommentRowView) convertView;
 		}
 		
-		rowView.setQuestionComment(mQuestion.getComments().get(position));
+		rowView.setQuestionComment(mComments.get(position));
 		
 		
 		return rowView;

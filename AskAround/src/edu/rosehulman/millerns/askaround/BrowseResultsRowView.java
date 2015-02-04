@@ -1,6 +1,7 @@
 package edu.rosehulman.millerns.askaround;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;

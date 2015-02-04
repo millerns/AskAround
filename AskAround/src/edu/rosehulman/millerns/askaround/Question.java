@@ -9,11 +9,11 @@ public class Question implements Parcelable{
 	
 	private int numOfAnswers;
 	private int dueInDays;
-	private String content;
-	private ArrayList<String> options;
-	private ArrayList<Integer> votes;
-	private int totalVotes;
-	private ArrayList<String> comments;
+	private String content;	
+	private ArrayList<String> options = new ArrayList<String>();
+	private ArrayList<Integer> votes = new ArrayList<Integer>();
+	private int totalVotes = 0;
+	private ArrayList<String> comments = new ArrayList<String>();
 
 	public static final String ALL_QUESTIONS = "all_questions";
 	public static final String QUESTION = "question";
@@ -23,6 +23,19 @@ public class Question implements Parcelable{
 		this.dueInDays = dueInDays;
 		this.content = content;
 	}
+	
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 	public int getNumberOfAnswers() {
 		return numOfAnswers;
@@ -40,16 +53,9 @@ public class Question implements Parcelable{
 		return options;
 	}
 
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
-		
+	public void addOption(String option) {
+		options.add(option);
+		votes.add(0);
 	}
 	
 	public int getTotalVotes() {
@@ -62,6 +68,15 @@ public class Question implements Parcelable{
 	
 	public ArrayList<String> getComments() {
 		return comments;
+	}
+	
+	public void addComment(String comment) {
+		comments.add(comment);
+	}
+	
+	public void addVote(int option) {
+		votes.set(option, votes.get(option) + 1);
+		totalVotes++;
 	}
 
 }
