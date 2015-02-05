@@ -42,5 +42,10 @@
     <string name="title_activity_specific_results">SpecificResultsActivity</string>
     <string name="title_activity_create_question">CreateQuestionActivity</string>
     <string name="title_activity_browse_results">BrowseResultsActivity</string>
+    <string name="title_activity_main_tabbed">MainTabbedActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

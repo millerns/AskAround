@@ -42,6 +42,10 @@
             android:name=".BrowseResultsActivity"
             android:label="@string/title_activity_browse_results" >
         </activity>
+        <activity
+            android:name=".MainTabbedActivity"
+            android:label="@string/title_activity_main_tabbed" >
+        </activity>
     </application>
 
 </manifest>
