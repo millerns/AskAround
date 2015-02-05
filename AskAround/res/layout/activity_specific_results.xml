@@ -36,7 +36,7 @@
             android:textColor="@color/white" />
 
         <ListView
-            android:id="@+id/result_list_view"
+            android:id="@+id/specific_result_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/question" >
@@ -52,7 +52,7 @@
         android:padding="15dp" >
 
         <ListView
-            android:id="@+id/comments_list_view"
+            android:id="@+id/specific_comments_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true">

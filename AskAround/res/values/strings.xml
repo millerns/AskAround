@@ -47,5 +47,9 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="action_settings">Settings</string>
+    <string name="sample_question">Sample question</string>
+    <string name="three_days">3 days</string>
+    <string name="_300">300</string>
+    <string name="option">Option</string>
 
 </resources>
