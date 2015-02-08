@@ -46,5 +46,7 @@
     <string name="three_days">3 days</string>
     <string name="_300">300</string>
     <string name="option">Option</string>
+    <string name="delete">Delete</string>
+    <string name="new_option">new option</string>
 
 </resources>
