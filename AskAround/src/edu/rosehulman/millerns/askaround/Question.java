@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Question implements Parcelable{
+public abstract class Question implements Parcelable{
 	
 	private int numOfAnswers;
 	private int dueInDays;
