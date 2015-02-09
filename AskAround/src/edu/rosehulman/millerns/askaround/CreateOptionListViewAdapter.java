@@ -23,11 +23,14 @@ public class CreateOptionListViewAdapter extends ArrayAdapter<String> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CreateOptionRowView rowView;
 		if (convertView == null) {
-			
+			rowView = new CreateOptionRowView(mContext);
+		} else {
+			rowView = (CreateOptionRowView) convertView;
 		}
 		
+		rowView.setNewOption(mOptions.get(position));
 		
-		return super.getView(position, convertView, parent);
+		return rowView;
 	}
 
 }

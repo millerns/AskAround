@@ -17,6 +17,7 @@ public abstract class Question implements Parcelable{
 
 	public static final String ALL_QUESTIONS = "all_questions";
 	public static final String QUESTION = "question";
+	public static final String NEW_OPTIONS = "new_options";
 	
 	public Question(int numberOfAnswers, int dueInDays, String content){
 		this.numOfAnswers = numberOfAnswers;
