@@ -31,8 +31,8 @@ public class BrowseResultsFragment extends Fragment implements
 		// mQuestions =
 		// intent.getParcelableArrayListExtra(Question.ALL_QUESTIONS);
 
-		Question q1 = new SingleVoteQuestion(2, 3, "test question 1");
-		Question q2 = new SingleVoteQuestion(100, 33, "test question 2");
+		Question q1 = new SingleChoiceQuestion(2, 3, "test question 1");
+		Question q2 = new SingleChoiceQuestion(100, 33, "test question 2");
 		mQuestions = new ArrayList<Question>();
 		mQuestions.add(q1);
 		mQuestions.add(q2);
