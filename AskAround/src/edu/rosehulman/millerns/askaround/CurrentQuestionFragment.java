@@ -39,16 +39,16 @@ public class CurrentQuestionFragment extends Fragment {
 		TextView questionContent = (TextView) v.findViewById(R.id.question);
 		questionContent.setText(currentQuestion.getContent());
 		
-		
 		loadOptions(currentQuestion);
-		EditText commentsView = (EditText) v.findViewById(R.id.comment);
-		comment = commentsView.getText().toString();
-	
+		final EditText commentsView = (EditText) v.findViewById(R.id.comment);
+
 		Button submitAnswer = (Button) v.findViewById(R.id.submit_button);
 		submitAnswer.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {				
+			public void onClick(View v) {	
+				comment = commentsView.getText().toString();
+				
 				if (selectedOptionIndex == -1) {
 					popErrorDialog();
 				} else {
