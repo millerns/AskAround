@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class CurrentQuestionFragment extends Fragment {
 	
@@ -34,6 +35,11 @@ public class CurrentQuestionFragment extends Fragment {
 		v = inflater.inflate(R.layout.activity_current_question, container, false);
 		
 		currentQuestion = generateNextQuestion();
+		
+		TextView questionContent = (TextView) v.findViewById(R.id.question);
+		questionContent.setText(currentQuestion.getContent());
+		
+		
 		loadOptions(currentQuestion);
 		EditText commentsView = (EditText) v.findViewById(R.id.comment);
 		comment = commentsView.getText().toString();
@@ -42,17 +48,18 @@ public class CurrentQuestionFragment extends Fragment {
 		submitAnswer.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				//TODO: these two lines need to be put back!
-				
-				//currentQuestion.addComment(comment);
-				if (selectedOptionIndex == -1 ) {
+			public void onClick(View v) {				
+				if (selectedOptionIndex == -1) {
 					popErrorDialog();
 				} else {
-					//currentQuestion.addVote(selectedOptionIndex);
-				}
-				
-				Log.d("AA", comment);
+					currentQuestion.addVote(selectedOptionIndex);
+					Log.d("AA", "you choose option: " + currentQuestion.getQuestionOptions().get(selectedOptionIndex));
+					
+					if (comment != null){
+						currentQuestion.addComment(comment);
+						Log.d("AA", "Comment: " + comment);
+					}
+				}				
 			}
 		});
 		
@@ -62,14 +69,13 @@ public class CurrentQuestionFragment extends Fragment {
 	private void loadOptions(final Question question) {
 		ListView optionListView = (ListView) v.findViewById(R.id.current_question_votes_list_view);
 		
-		//TODO: This line need to be put back!!
-		//ArrayList optionList = question.getQuestionOptions(); 
+		ArrayList optionList = question.getQuestionOptions(); 
 		
 		//for testing
-		ArrayList<String> optionList = new ArrayList<String>();
-		optionList.add("option 1");
-		optionList.add("option 2");
-		optionList.add("option 3");
+//		ArrayList<String> optionList = new ArrayList<String>();
+//		optionList.add("option 1");
+//		optionList.add("option 2");
+//		optionList.add("option 3");
 		
 		
 		ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, optionList);
@@ -81,7 +87,6 @@ public class CurrentQuestionFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				selectedOptionIndex = position;
-				Log.d("AA", "You selected option: " + selectedOptionIndex);
 			}
 		});
 	}
@@ -101,7 +106,6 @@ public class CurrentQuestionFragment extends Fragment {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								// TODO Auto-generated method stub
 								dialog.dismiss();
 
 							}
@@ -114,8 +118,11 @@ public class CurrentQuestionFragment extends Fragment {
 	}
 	
 	private Question generateNextQuestion() {
-		//Question q = new Question(3, 10, "First Question");
+		SingleChoiceQuestion question = new SingleChoiceQuestion(3, 10, "hello question 1");
+		question.addOption("so you are option 1");
+		question.addOption("I am option 2");
+		question.addOption("please choose me");
 		
-		return null;
+		return question;
 	}
 }

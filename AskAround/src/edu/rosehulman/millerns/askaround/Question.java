@@ -118,5 +118,9 @@ public abstract class Question implements Parcelable {
 		totalVotes--;
 	}
 	
+	public String getContent() {
+		return content;
+	}
+	
 
 }
