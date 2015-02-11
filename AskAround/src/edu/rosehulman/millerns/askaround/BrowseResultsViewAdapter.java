@@ -31,7 +31,7 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 		
 		rowView.setQuestionmContent(mQuestions.get(position).getQuestionContent());
 		rowView.setQuestionDueTime(Integer.toString(mQuestions.get(position).getDueInDays()));
-		rowView.setQuestionHotness(Integer.toString(mQuestions.get(position).getNumberOfAnswers()));
+		rowView.setQuestionHotness(Integer.toString(mQuestions.get(position).getNumOfAnswers()));
 		
 		return rowView;
 	}

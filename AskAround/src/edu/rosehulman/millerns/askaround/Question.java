@@ -9,7 +9,6 @@ import android.os.Parcelable;
 
 public abstract class Question implements Parcelable {
 
-	private int numOfAnswers = 0;
 	private int dueInDays;
 	private String content;
 	private ArrayList<String> options = new ArrayList<String>();
@@ -33,7 +32,6 @@ public abstract class Question implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(numOfAnswers);
 		dest.writeInt(dueInDays);
 		dest.writeString(content);
 		dest.writeStringList(options);
@@ -51,7 +49,6 @@ public abstract class Question implements Parcelable {
 	}
 
 	public Question(Parcel in) {
-		this.numOfAnswers = in.readInt();
 		this.dueInDays = in.readInt();
 		this.content = in.readString();
 		this.options = new ArrayList<String>();
@@ -68,10 +65,6 @@ public abstract class Question implements Parcelable {
 		this.totalVotes = in.readInt();
 		this.comments = new ArrayList<String>();
 		in.readStringList(comments);
-	}
-
-	public int getNumberOfAnswers() {
-		return numOfAnswers;
 	}
 
 	public int getDueInDays() {
