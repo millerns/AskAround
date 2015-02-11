@@ -5,9 +5,9 @@ import android.os.Parcelable;
 
 public class SingleChoiceQuestion extends Question implements Parcelable {
 
-	public SingleChoiceQuestion(int numberOfAnswers, int dueInDays,
+	public SingleChoiceQuestion(int dueInDays,
 			String content) {
-		super(numberOfAnswers, dueInDays, content);
+		super(dueInDays, content);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -38,4 +38,10 @@ public class SingleChoiceQuestion extends Question implements Parcelable {
 	public SingleChoiceQuestion(Parcel in) {
 		super(in);
 	}
+
+	@Override
+	int getNumOfAnswers() {
+		return super.getTotalVotes();
+	}
+
 }

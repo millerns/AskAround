@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public abstract class Question implements Parcelable {
 
-	private int numOfAnswers;
+	private int numOfAnswers = 0;
 	private int dueInDays;
 	private String content;
 	private ArrayList<String> options = new ArrayList<String>();
@@ -21,8 +21,7 @@ public abstract class Question implements Parcelable {
 	public static final String QUESTION = "question";
 	public static final String NEW_OPTIONS = "new_options";
 
-	public Question(int numberOfAnswers, int dueInDays, String content) {
-		this.numOfAnswers = numberOfAnswers;
+	public Question(int dueInDays, String content) {
 		this.dueInDays = dueInDays;
 		this.content = content;
 	}
@@ -122,5 +121,6 @@ public abstract class Question implements Parcelable {
 		return content;
 	}
 	
+	abstract int getNumOfAnswers();
 
 }

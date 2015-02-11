@@ -118,7 +118,7 @@ public class CurrentQuestionFragment extends Fragment {
 	}
 	
 	private Question generateNextQuestion() {
-		SingleChoiceQuestion question = new SingleChoiceQuestion(3, 10, "hello question 1");
+		SingleChoiceQuestion question = new SingleChoiceQuestion(10, "hello question 1");
 		question.addOption("so you are option 1");
 		question.addOption("I am option 2");
 		question.addOption("please choose me");

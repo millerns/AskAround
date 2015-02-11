@@ -28,7 +28,7 @@ public class SpecificResultsActivity extends Activity {
 		// mQuestion = intent.getParcelableExtra(Question.QUESTION);
 
 		// just for testing
-		mQuestion = new SingleChoiceQuestion(2, 3, "test question 1");
+		mQuestion = new SingleChoiceQuestion(3, "test question 1");
 		mQuestion.addComment("Comment 1");
 		mQuestion.addComment("Comment 2");
 		mQuestion.addOption("Option 1");
