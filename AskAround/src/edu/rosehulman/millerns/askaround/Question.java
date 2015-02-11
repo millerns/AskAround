@@ -103,7 +103,7 @@ public abstract class Question implements Parcelable {
 	public void addVote(int option) {
 		votes.set(option, votes.get(option) + 1);
 		totalVotes++;
-	}
+	}v
 	
 	public void cancleVote(int option) {
 		votes.set(option, votes.get(option) - 1);
