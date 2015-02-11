@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 public class MainTabbedActivity extends Activity implements
 		ActionBar.TabListener {
 
+	private static final String AA = "AA";
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a {@link FragmentPagerAdapter}
