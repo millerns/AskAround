@@ -2,6 +2,8 @@ package edu.rosehulman.millerns.askaround;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -109,6 +111,13 @@ public class CreateQuestionActivity extends Activity {
 				default:
 					break;
 				}
+				
+				List<Long> votes = new ArrayList<Long>();
+				for(int i = 0; i < mNewOptions.size(); i++) {
+					votes.add((long) 0);
+				}
+				newQuestion.setVotes(votes);
+				
 				insertQuestionTask(newQuestion);
 			}
 		});

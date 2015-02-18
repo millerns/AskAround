@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,10 @@ public class CurrentQuestionFragment extends Fragment {
 	private int selectedOptionIndex = -1;
 	private String newComment;
 	private Questions mService;
+	public final static String UPDATED_COMMENTS = "UPDATED__COMMENTS";
+	public final static String UPDATED_QUESTION_OPTIONS = "UPDATED__OPTIONS";
+	public final static String UPDATED_QUESTION_VOTES = "UPDATED__VOTES";
+	private static final int REQUEST_CODE_FOR_RESULT = 1;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,8 +75,12 @@ public class CurrentQuestionFragment extends Fragment {
 				} else {
 					votes.set(selectedOptionIndex, votes.get(selectedOptionIndex) + 1);
 					Log.d("AA", "you choose option: " + options.get(selectedOptionIndex));
+					Log.d("AA", "votes for your option: " + votes.get(selectedOptionIndex));
 					
 					if (newComment != null){
+						if (comments == null) {
+							comments = new ArrayList<String>();
+						}
 						comments.add(newComment);
 						Log.d("AA", "Comment: " + newComment);
 					}
@@ -86,6 +95,11 @@ public class CurrentQuestionFragment extends Fragment {
 				updatedQuestion.setEntityKey(entityKey);
 				
 				updateQuestion(updatedQuestion);
+				
+				showCurrentQuestionResult(comments, options, votes);
+				
+				
+				
 			}
 		});
 		
@@ -163,6 +177,29 @@ public class CurrentQuestionFragment extends Fragment {
 		new InsertQuestionTask().execute(newQuestion);
 	}
 	
+	
+	private void showCurrentQuestionResult(java.util.List<String> comments, java.util.List<String> options, java.util.List<Long> votes) {
+		
+		Intent resultIntent = new Intent(getActivity(), SpecificResultsActivity.class);
+		resultIntent.putStringArrayListExtra(UPDATED_COMMENTS, (ArrayList<String>)comments);
+		resultIntent.putStringArrayListExtra(UPDATED_QUESTION_OPTIONS, (ArrayList<String>)options);
+		ArrayList<Integer> mVotes = new ArrayList<Integer>();
+		for (int i = 0; i < votes.size(); i++) {
+			mVotes.add(safeLongToInt(votes.get(i)));
+		}
+		
+		resultIntent.putIntegerArrayListExtra(UPDATED_QUESTION_VOTES, mVotes);
+		startActivityForResult(resultIntent, REQUEST_CODE_FOR_RESULT);
+		
+	}
+	
+	public static int safeLongToInt(long l) {
+	    if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+	        throw new IllegalArgumentException
+	            (l + " cannot be cast to int without changing its value.");
+	    }
+	    return (int) l;
+	}
 	
 	private class QueryForTask extends AsyncTask<Void, Void, QuestionCollection> {
 
