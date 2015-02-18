@@ -1,8 +1,10 @@
 package edu.rosehulman.millerns.askaround;
 
 import java.util.ArrayList;
+
+import com.appspot.dingx_askaround.questions.model.Question;
+
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -29,9 +31,9 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 			rowView = (BrowseResultsRowView) convertView;
 		}
 		
-		rowView.setQuestionmContent(mQuestions.get(position).getQuestionContent());
-		rowView.setQuestionDueTime(Integer.toString(mQuestions.get(position).getDueInDays()));
-		rowView.setQuestionHotness(Integer.toString(mQuestions.get(position).getNumOfAnswers()));
+		rowView.setQuestionmContent(mQuestions.get(position).getContent());
+		rowView.setQuestionDueTime(Integer.toString(mQuestions.get(position).getVotes().size()));
+		rowView.setQuestionHotness(Integer.toString(mQuestions.get(position).getComments().size()));
 		
 		return rowView;
 	}
