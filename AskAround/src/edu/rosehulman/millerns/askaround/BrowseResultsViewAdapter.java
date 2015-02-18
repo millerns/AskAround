@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.appspot.dingx_askaround.questions.model.Question;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -32,8 +33,11 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 		}
 		
 		rowView.setQuestionmContent(mQuestions.get(position).getContent());
-		rowView.setQuestionDueTime(Integer.toString(mQuestions.get(position).getVotes().size()));
-		rowView.setQuestionHotness(Integer.toString(mQuestions.get(position).getComments().size()));
+		Log.d("AA", "Current question content: " + mQuestions.get(position).getContent());
+		if (mQuestions.get(position).getVotes() != null)
+			rowView.setQuestionDueTime(Integer.toString(mQuestions.get(position).getVotes().size()));
+		if (mQuestions.get(position).getComments() != null)
+			rowView.setQuestionHotness(Integer.toString(mQuestions.get(position).getComments().size()));
 		
 		return rowView;
 	}

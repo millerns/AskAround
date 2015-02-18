@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,10 +32,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class CurrentQuestionFragment extends Fragment {
-	
+
 	private Question currentQuestion;
 	private View v;
-	private int selectedOptionIndex = -1;
+	private int selectedOptionIndex;
+	private ArrayList<Integer> selectedIndexes;
 	private String newComment;
 	private Questions mService;
 	public final static String UPDATED_COMMENTS = "UPDATED__COMMENTS";
@@ -43,29 +45,36 @@ public class CurrentQuestionFragment extends Fragment {
 	public final static String CURRENT_QUESTION_TYPE = "CURRENT_QUESTION_TYPE";
 	public static final int REQUEST_CODE_FOR_RESULT = 1;
 	private static int currentQuestionIndex = 0;
-	
+	private ArrayAdapter<String> optionsAdapter;
+	private ListView optionListView;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		v = inflater.inflate(R.layout.activity_current_question, container, false);
-		
-		Questions.Builder builder = new Questions.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
+		selectedIndexes = new ArrayList<Integer>();
+		selectedOptionIndex = -1;
+
+		v = inflater.inflate(R.layout.activity_current_question, container,
+				false);
+
+		Questions.Builder builder = new Questions.Builder(
+				AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
 		mService = builder.build();
-		
+
 		generateNextQuestion();
-		
-		setQuestionTypeHint();
+
 		TextView questionContent = (TextView) v.findViewById(R.id.question);
 		questionContent.setText(currentQuestion.getContent());
-		
+
 		loadOptions(currentQuestion);
+
 		final EditText commentsView = (EditText) v.findViewById(R.id.comment);
 
 		Button submitAnswer = (Button) v.findViewById(R.id.submit_button);
 		submitAnswer.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
-			public void onClick(View v) {	
+			public void onClick(View v) {
 				newComment = commentsView.getText().toString();
 				java.util.List<String> comments = currentQuestion.getComments();
 				java.util.List<String> options = currentQuestion.getOptions();
@@ -73,20 +82,16 @@ public class CurrentQuestionFragment extends Fragment {
 				String content = currentQuestion.getContent();
 				String questionType = currentQuestion.getQuestionType();
 				String entityKey = currentQuestion.getEntityKey();
-				
-				if (selectedOptionIndex == -1) {
-					popErrorDialog();
-				} else {
-					votes.set(selectedOptionIndex, votes.get(selectedOptionIndex) + 1);
-					
-					if (newComment != null){
-						if (comments == null) {
-							comments = new ArrayList<String>();
-						}
-						comments.add(newComment);
+
+				addSelectedOptions(votes, questionType);
+
+				if (!newComment.equals("")) {
+					if (comments == null) {
+						comments = new ArrayList<String>();
 					}
-				}	
-				
+					comments.add(newComment);
+				}
+
 				Question updatedQuestion = new Question();
 				updatedQuestion.setContent(content);
 				updatedQuestion.setComments(comments);
@@ -94,45 +99,89 @@ public class CurrentQuestionFragment extends Fragment {
 				updatedQuestion.setVotes(votes);
 				updatedQuestion.setQuestionType(questionType);
 				updatedQuestion.setEntityKey(entityKey);
-				
-				updateQuestion(updatedQuestion);
-				
-				showCurrentQuestionResult(comments, options, votes, currentQuestion.getQuestionType());	
-				
-			}
-		});
-		
-		return v;
-	}	
-	
-	private void setQuestionTypeHint() {
-		TextView questionTypeHint = (TextView) v.findViewById(R.id.instructions);
-		if (currentQuestion.getQuestionType().equals("COMMENTS_ONLY_QUESTION"))
-			questionTypeHint.setText(getResources().getString(R.string.comments_only));
-		else if (currentQuestion.getQuestionType().equals("SINGLE_CHOICE_QUESTION"))
-			questionTypeHint.setText(getResources().getString(R.string.pick_one_option));
-		else 
-			questionTypeHint.setText(getResources().getString(R.string.pick_any_option));
-	}
-	
-	private void loadOptions(final Question question) {
-		ListView optionListView = (ListView) v.findViewById(R.id.current_question_votes_list_view);
-		
-		ArrayList<String> optionList = (ArrayList<String>) question.getOptions(); 
-		
-		ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, optionList);
-		optionListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		optionListView.setAdapter(optionsAdapter);
 
-		optionListView.setOnItemClickListener(new OnItemClickListener() {			
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				selectedOptionIndex = position;
+				updateQuestion(updatedQuestion);
+
+				showCurrentQuestionResult(comments, options, votes,
+						currentQuestion.getQuestionType());
+
+			}
+
+			private void addSelectedOptions(java.util.List<Long> votes,
+					String questionType) {
+				if (questionType.equals("SINGLE_CHOICE_QUESTION")) {
+					if (selectedOptionIndex == -1)
+						popErrorDialog();
+					else
+						votes.set(selectedOptionIndex,
+								votes.get(selectedOptionIndex) + 1);
+				} else if (questionType.equals("MULTIPLE_CHOICE_QUESTION")) {
+
+					SparseBooleanArray checked = optionListView
+							.getCheckedItemPositions();
+					for (int i = 0; i < optionListView.getCount(); i++) {
+						if (checked.get(i)) {
+							if (!selectedIndexes.contains(i))
+							selectedIndexes.add(i);
+							Log.d("AA", "Add option: " + i);
+						}
+					}
+
+					if (selectedIndexes.size() == 0)
+						popErrorDialog();
+					else {
+						for (Integer i : selectedIndexes) {
+							votes.set(i, votes.get(i) + 1);
+							Log.d("AA", "Option " + i + "is selected!");
+						}
+					}
+				}
 			}
 		});
+
+		return v;
 	}
-	
+
+	private void loadOptions(final Question question) {
+		optionListView = (ListView) v
+				.findViewById(R.id.current_question_votes_list_view);
+
+		ArrayList<String> optionList = (ArrayList<String>) question
+				.getOptions();
+
+		TextView questionTypeHint = (TextView) v
+				.findViewById(R.id.instructions);
+		if (currentQuestion.getQuestionType().equals("COMMENTS_ONLY_QUESTION")) {
+			questionTypeHint.setText(getResources().getString(
+					R.string.comments_only));
+			optionListView.setVisibility(View.GONE);
+		} else if (currentQuestion.getQuestionType().equals(
+				"SINGLE_CHOICE_QUESTION")) {
+			questionTypeHint.setText(getResources().getString(
+					R.string.pick_one_option));
+			optionsAdapter = new ArrayAdapter<String>(getActivity(),
+					android.R.layout.simple_list_item_single_choice, optionList);
+			optionListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			optionListView.setAdapter(optionsAdapter);
+
+			optionListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					selectedOptionIndex = position;
+				}
+			});
+		} else {
+			questionTypeHint.setText(getResources().getString(
+					R.string.pick_any_option));
+			optionsAdapter = new ArrayAdapter<String>(getActivity(),
+					android.R.layout.simple_list_item_multiple_choice,
+					optionList);
+			optionListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+			optionListView.setAdapter(optionsAdapter);
+		}
+	}
+
 	private void popErrorDialog() {
 		DialogFragment df = new DialogFragment() {
 			@Override
@@ -158,7 +207,7 @@ public class CurrentQuestionFragment extends Fragment {
 		};
 		df.show(getFragmentManager(), "option error dialog");
 	}
-	
+
 	private void popNoMoreQuestionDialog() {
 		DialogFragment df = new DialogFragment() {
 			@Override
@@ -184,8 +233,7 @@ public class CurrentQuestionFragment extends Fragment {
 		};
 		df.show(getFragmentManager(), "option error dialog");
 	}
-	
-	
+
 	private void generateNextQuestion() {
 		new QueryForTask().execute();
 		try {
@@ -195,55 +243,64 @@ public class CurrentQuestionFragment extends Fragment {
 		}
 		Log.d("AA", "finish executing query");
 	}
-	
+
 	private void updateQuestion(Question newQuestion) {
 		new InsertQuestionTask().execute(newQuestion);
 	}
-	
-	
-	private void showCurrentQuestionResult(java.util.List<String> comments, java.util.List<String> options, java.util.List<Long> votes, String type) {
-		
-		Intent resultIntent = new Intent(getActivity(), SpecificResultsActivity.class);
-		resultIntent.putStringArrayListExtra(UPDATED_COMMENTS, (ArrayList<String>)comments);
-		resultIntent.putStringArrayListExtra(UPDATED_QUESTION_OPTIONS, (ArrayList<String>)options);
-		resultIntent.putExtra(CURRENT_QUESTION_TYPE, type);
-		ArrayList<Integer> mVotes = new ArrayList<Integer>();
-		for (int i = 0; i < votes.size(); i++) {
-			mVotes.add(safeLongToInt(votes.get(i)));
+
+	private void showCurrentQuestionResult(java.util.List<String> comments,
+			java.util.List<String> options, java.util.List<Long> votes,
+			String type) {
+
+		Intent resultIntent = new Intent(getActivity(),
+				SpecificResultsActivity.class);
+		if ((type.equals("SINGLE_CHOICE_QUESTION")) || (type.equals("MULTIPLE_CHOICE_QUESTION"))){
+			resultIntent.putStringArrayListExtra(UPDATED_QUESTION_OPTIONS,
+					(ArrayList<String>) options);
+			
+			ArrayList<Integer> mVotes = new ArrayList<Integer>();
+			for (int i = 0; i < votes.size(); i++) {
+				mVotes.add(safeLongToInt(votes.get(i)));
+			}
+
+			resultIntent.putIntegerArrayListExtra(UPDATED_QUESTION_VOTES, mVotes);
 		}
 		
-		resultIntent.putIntegerArrayListExtra(UPDATED_QUESTION_VOTES, mVotes);
+		resultIntent.putStringArrayListExtra(UPDATED_COMMENTS,
+				(ArrayList<String>) comments);
+		
+		resultIntent.putExtra(CURRENT_QUESTION_TYPE, type);
+		
 		startActivityForResult(resultIntent, REQUEST_CODE_FOR_RESULT);
-		//finishActivityFromChild(resultIntent, REQUEST_CODE_FOR_RESULT);
-		
-		
-	}
-	
+		// finishActivityFromChild(resultIntent, REQUEST_CODE_FOR_RESULT);
 
-//	private void finishActivityFromChild(Intent resultIntent,
-//			int requestCodeForResult) {
-//		Log.d("AA", "returned to current activity!!");
-//	}
+	}
+
+	// private void finishActivityFromChild(Intent resultIntent,
+	// int requestCodeForResult) {
+	// Log.d("AA", "returned to current activity!!");
+	// }
 
 	public static int safeLongToInt(long l) {
-	    if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
-	        throw new IllegalArgumentException
-	            (l + " cannot be cast to int without changing its value.");
-	    }
-	    return (int) l;
+		if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException(l
+					+ " cannot be cast to int without changing its value.");
+		}
+		return (int) l;
 	}
-	
-	private class QueryForTask extends AsyncTask<Void, Void, QuestionCollection> {
+
+	private class QueryForTask extends
+			AsyncTask<Void, Void, QuestionCollection> {
 
 		@Override
 		protected QuestionCollection doInBackground(Void... params) {
 			// TODO Auto-generated method stub
 			Log.d("AA", "start generating new question");
 			QuestionCollection questions = null;
-				
+
 			try {
 				List query = mService.question().list();
-				query.setOrder("create_date");
+				query.setOrder("-create_date");
 				query.setLimit(50L);
 				questions = query.execute();
 				Log.d("AA", "got new questions: " + questions.size());
@@ -251,54 +308,55 @@ public class CurrentQuestionFragment extends Fragment {
 					popNoMoreQuestionDialog();
 					currentQuestionIndex--;
 				}
-				
-				currentQuestion = questions.getItems().get(currentQuestionIndex);
+
+				currentQuestion = questions.getItems()
+						.get(currentQuestionIndex);
 				currentQuestionIndex++;
-				Log.d("AA", "current items: " + questions.getItems().get(0).getContent());
-				
+				Log.d("AA", "current items: "
+						+ questions.getItems().get(0).getContent());
+
 			} catch (IOException e) {
 				Log.e("AA", "Failed loading: " + e);
 			}
-			
+
 			Log.d("AA", "About to return question collections");
 			return questions;
 		}
-		
+
 		@Override
 		protected void onPostExecute(QuestionCollection result) {
 			super.onPostExecute(result);
 			Log.d("AA", "In post execute");
-			
+
 			if (result == null) {
 				Log.d("AA", "Failed loading, result is null");
 				return;
 			}
 		}
 	}
-	
-	private class InsertQuestionTask extends AsyncTask<Question, Void, Question> {
+
+	private class InsertQuestionTask extends
+			AsyncTask<Question, Void, Question> {
 
 		@Override
 		protected Question doInBackground(Question... questions) {
 			Question returnedQuestion = null;
 			try {
-				returnedQuestion = mService.question().insert(questions[0]).execute();
+				returnedQuestion = mService.question().insert(questions[0])
+						.execute();
 			} catch (IOException e) {
 				Log.e("AA", "Failed inserting: " + e);
 			}
 			return returnedQuestion;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Question result) {
 			super.onPostExecute(result);
 			if (result == null) {
 				Log.e("AA", "Failed inserting, result is null");
-			}	
-		}	
+			}
+		}
 	}
-	
-	
-	
-	
+
 }

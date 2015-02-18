@@ -53,5 +53,6 @@
     <string name="delete_option">Delete option</string>
     <string name="delete_new_option_text">Are you sure you want to delete this option?</string>
     <string name="ask_question_menu_item">Ask Question</string>
+    <string name="cool">Cool</string>
 
 </resources>

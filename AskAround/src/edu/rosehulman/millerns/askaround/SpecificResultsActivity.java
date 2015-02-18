@@ -79,17 +79,22 @@ public class SpecificResultsActivity extends Activity {
 		ListView questionCommentListView = (ListView) findViewById(R.id.specific_comments_list_view);
 		
 		ArrayList<Map<String, Integer>> optionsVotes = new ArrayList<Map<String, Integer>>();
-		for (int i = 0; i < mOptions.size(); i++) {
-			Map<String, Integer> optionVote = new HashMap<String, Integer>();
-			optionVote.put(mOptions.get(i), mVotes.get(i));
-			optionsVotes.add(optionVote);
-		}
-		questionResultAdapter = new SingleChoiceQuestionResultViewAdapter(this,
-				optionsVotes);
-		questionCommentAdapter = new SingleChoiceQuestionCommentAdapter(this,
-				mComments);
 		
-		questionResultListView.setAdapter(questionResultAdapter);
-		questionCommentListView.setAdapter(questionCommentAdapter);
+		if(mOptions != null) {
+			for (int i = 0; i < mOptions.size(); i++) {
+				Map<String, Integer> optionVote = new HashMap<String, Integer>();
+				optionVote.put(mOptions.get(i), mVotes.get(i));
+				optionsVotes.add(optionVote);
+			}
+			questionResultAdapter = new SingleChoiceQuestionResultViewAdapter(this,
+					optionsVotes);
+			questionResultListView.setAdapter(questionResultAdapter);
+		}
+		
+		if (mComments != null) {
+			questionCommentAdapter = new SingleChoiceQuestionCommentAdapter(this,
+					mComments);
+			questionCommentListView.setAdapter(questionCommentAdapter);
+		}
 	}
 }

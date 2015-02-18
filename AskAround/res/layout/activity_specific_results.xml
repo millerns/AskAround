@@ -72,7 +72,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/blue"
-        android:text="@string/next_question"
+        android:text="@string/cool"
         android:textColor="@color/white" />
 
 
