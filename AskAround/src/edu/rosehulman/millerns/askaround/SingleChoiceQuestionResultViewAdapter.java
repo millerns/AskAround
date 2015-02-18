@@ -47,9 +47,7 @@ public class SingleChoiceQuestionResultViewAdapter extends ArrayAdapter<Map<Stri
 		} else {
 			rowView = (SingleChoiceQuestionResultRowView) convertView;
 		}
-		
-		Log.d("RV", mOptions.get(position));
-		
+				
 		rowView.setOption(mOptions.get(position));
 		rowView.setProgressBar(mVotes.get(position), totalVotes);
 		return rowView;

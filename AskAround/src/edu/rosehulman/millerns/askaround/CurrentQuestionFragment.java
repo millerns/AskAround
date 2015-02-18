@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -39,7 +40,9 @@ public class CurrentQuestionFragment extends Fragment {
 	public final static String UPDATED_COMMENTS = "UPDATED__COMMENTS";
 	public final static String UPDATED_QUESTION_OPTIONS = "UPDATED__OPTIONS";
 	public final static String UPDATED_QUESTION_VOTES = "UPDATED__VOTES";
-	private static final int REQUEST_CODE_FOR_RESULT = 1;
+	public final static String CURRENT_QUESTION_TYPE = "CURRENT_QUESTION_TYPE";
+	public static final int REQUEST_CODE_FOR_RESULT = 1;
+	private static int currentQuestionIndex = 0;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +54,7 @@ public class CurrentQuestionFragment extends Fragment {
 		
 		generateNextQuestion();
 		
+		setQuestionTypeHint();
 		TextView questionContent = (TextView) v.findViewById(R.id.question);
 		questionContent.setText(currentQuestion.getContent());
 		
@@ -74,15 +78,12 @@ public class CurrentQuestionFragment extends Fragment {
 					popErrorDialog();
 				} else {
 					votes.set(selectedOptionIndex, votes.get(selectedOptionIndex) + 1);
-					Log.d("AA", "you choose option: " + options.get(selectedOptionIndex));
-					Log.d("AA", "votes for your option: " + votes.get(selectedOptionIndex));
 					
 					if (newComment != null){
 						if (comments == null) {
 							comments = new ArrayList<String>();
 						}
 						comments.add(newComment);
-						Log.d("AA", "Comment: " + newComment);
 					}
 				}	
 				
@@ -96,9 +97,7 @@ public class CurrentQuestionFragment extends Fragment {
 				
 				updateQuestion(updatedQuestion);
 				
-				showCurrentQuestionResult(comments, options, votes);
-				
-				
+				showCurrentQuestionResult(comments, options, votes, currentQuestion.getQuestionType());	
 				
 			}
 		});
@@ -106,17 +105,20 @@ public class CurrentQuestionFragment extends Fragment {
 		return v;
 	}	
 	
+	private void setQuestionTypeHint() {
+		TextView questionTypeHint = (TextView) v.findViewById(R.id.instructions);
+		if (currentQuestion.getQuestionType().equals("COMMENTS_ONLY_QUESTION"))
+			questionTypeHint.setText(getResources().getString(R.string.comments_only));
+		else if (currentQuestion.getQuestionType().equals("SINGLE_CHOICE_QUESTION"))
+			questionTypeHint.setText(getResources().getString(R.string.pick_one_option));
+		else 
+			questionTypeHint.setText(getResources().getString(R.string.pick_any_option));
+	}
+	
 	private void loadOptions(final Question question) {
 		ListView optionListView = (ListView) v.findViewById(R.id.current_question_votes_list_view);
 		
 		ArrayList<String> optionList = (ArrayList<String>) question.getOptions(); 
-		
-		//for testing
-//		ArrayList<String> optionList = new ArrayList<String>();
-//		optionList.add("option 1");
-//		optionList.add("option 2");
-//		optionList.add("option 3");
-		
 		
 		ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_single_choice, optionList);
 		optionListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -157,13 +159,34 @@ public class CurrentQuestionFragment extends Fragment {
 		df.show(getFragmentManager(), "option error dialog");
 	}
 	
+	private void popNoMoreQuestionDialog() {
+		DialogFragment df = new DialogFragment() {
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				// set options
+				builder.setTitle("Sorry");
+				builder.setMessage("No more questions to answer");
+				builder.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+
+							}
+						});
+
+				return builder.create();
+			}
+		};
+		df.show(getFragmentManager(), "option error dialog");
+	}
+	
+	
 	private void generateNextQuestion() {
-//		SingleChoiceQuestion question = new SingleChoiceQuestion(10, "hello question 1");
-//		question.addOption("so you are option 1");
-//		question.addOption("I am option 2");
-//		question.addOption("please choose me");
-//		
-//		return question;
 		new QueryForTask().execute();
 		try {
 			Thread.sleep(1000);
@@ -178,11 +201,12 @@ public class CurrentQuestionFragment extends Fragment {
 	}
 	
 	
-	private void showCurrentQuestionResult(java.util.List<String> comments, java.util.List<String> options, java.util.List<Long> votes) {
+	private void showCurrentQuestionResult(java.util.List<String> comments, java.util.List<String> options, java.util.List<Long> votes, String type) {
 		
 		Intent resultIntent = new Intent(getActivity(), SpecificResultsActivity.class);
 		resultIntent.putStringArrayListExtra(UPDATED_COMMENTS, (ArrayList<String>)comments);
 		resultIntent.putStringArrayListExtra(UPDATED_QUESTION_OPTIONS, (ArrayList<String>)options);
+		resultIntent.putExtra(CURRENT_QUESTION_TYPE, type);
 		ArrayList<Integer> mVotes = new ArrayList<Integer>();
 		for (int i = 0; i < votes.size(); i++) {
 			mVotes.add(safeLongToInt(votes.get(i)));
@@ -190,9 +214,17 @@ public class CurrentQuestionFragment extends Fragment {
 		
 		resultIntent.putIntegerArrayListExtra(UPDATED_QUESTION_VOTES, mVotes);
 		startActivityForResult(resultIntent, REQUEST_CODE_FOR_RESULT);
+		//finishActivityFromChild(resultIntent, REQUEST_CODE_FOR_RESULT);
+		
 		
 	}
 	
+
+//	private void finishActivityFromChild(Intent resultIntent,
+//			int requestCodeForResult) {
+//		Log.d("AA", "returned to current activity!!");
+//	}
+
 	public static int safeLongToInt(long l) {
 	    if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
 	        throw new IllegalArgumentException
@@ -207,15 +239,21 @@ public class CurrentQuestionFragment extends Fragment {
 		protected QuestionCollection doInBackground(Void... params) {
 			// TODO Auto-generated method stub
 			Log.d("AA", "start generating new question");
-
 			QuestionCollection questions = null;
+				
 			try {
 				List query = mService.question().list();
 				query.setOrder("create_date");
 				query.setLimit(50L);
 				questions = query.execute();
 				Log.d("AA", "got new questions: " + questions.size());
-				currentQuestion = questions.getItems().get(0);
+				if (currentQuestionIndex == questions.size()) {
+					popNoMoreQuestionDialog();
+					currentQuestionIndex--;
+				}
+				
+				currentQuestion = questions.getItems().get(currentQuestionIndex);
+				currentQuestionIndex++;
 				Log.d("AA", "current items: " + questions.getItems().get(0).getContent());
 				
 			} catch (IOException e) {
@@ -235,9 +273,6 @@ public class CurrentQuestionFragment extends Fragment {
 				Log.d("AA", "Failed loading, result is null");
 				return;
 			}
-			
-			
-			
 		}
 	}
 	
