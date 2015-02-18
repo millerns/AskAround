@@ -59,22 +59,27 @@ public class BrowseResultsFragment extends Fragment implements
 
 		Intent resultIntent = new Intent(getActivity(),
 				SpecificResultsActivity.class);
+		if ((type.equals("SINGLE_CHOICE_QUESTION")) || (type.equals("MULTIPLE_CHOICE_QUESTION"))){
+			resultIntent.putStringArrayListExtra(
+					CurrentQuestionFragment.UPDATED_QUESTION_OPTIONS,
+					(ArrayList<String>) options);
+			
+			ArrayList<Integer> mVotes = new ArrayList<Integer>();
+			for (int i = 0; i < votes.size(); i++) {
+				mVotes.add(safeLongToInt(votes.get(i)));
+			}
+
+			resultIntent.putIntegerArrayListExtra(
+					CurrentQuestionFragment.UPDATED_QUESTION_VOTES, mVotes);
+		}
 		
 		resultIntent.putStringArrayListExtra(
 				CurrentQuestionFragment.UPDATED_COMMENTS,
 				(ArrayList<String>) comments);
-		resultIntent.putStringArrayListExtra(
-				CurrentQuestionFragment.UPDATED_QUESTION_OPTIONS,
-				(ArrayList<String>) options);
+		
 		resultIntent.putExtra(CurrentQuestionFragment.CURRENT_QUESTION_TYPE,
 				type);
-		ArrayList<Integer> mVotes = new ArrayList<Integer>();
-		for (int i = 0; i < votes.size(); i++) {
-			mVotes.add(safeLongToInt(votes.get(i)));
-		}
-
-		resultIntent.putIntegerArrayListExtra(
-				CurrentQuestionFragment.UPDATED_QUESTION_VOTES, mVotes);
+		
 		startActivityForResult(resultIntent,
 				CurrentQuestionFragment.REQUEST_CODE_FOR_RESULT);
 	}
