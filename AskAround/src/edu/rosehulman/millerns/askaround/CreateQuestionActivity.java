@@ -119,6 +119,8 @@ public class CreateQuestionActivity extends Activity {
 				newQuestion.setVotes(votes);
 				
 				insertQuestionTask(newQuestion);
+				
+				finish();
 			}
 		});
 	}
