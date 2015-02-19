@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -43,6 +44,7 @@ public class CurrentQuestionFragment extends Fragment {
 	public final static String UPDATED_QUESTION_OPTIONS = "UPDATED__OPTIONS";
 	public final static String UPDATED_QUESTION_VOTES = "UPDATED__VOTES";
 	public final static String CURRENT_QUESTION_TYPE = "CURRENT_QUESTION_TYPE";
+	public final static String CURRENT_QUESTION_CONTENT = "CURRENT_QUESTION_CONTENT";
 	public static final int REQUEST_CODE_FOR_RESULT = 1;
 	private static int currentQuestionIndex = 0;
 	private ArrayAdapter<String> optionsAdapter;
@@ -53,6 +55,7 @@ public class CurrentQuestionFragment extends Fragment {
 			Bundle savedInstanceState) {
 		selectedIndexes = new ArrayList<Integer>();
 		selectedOptionIndex = -1;
+		Log.d("AA", "yeah we start");
 
 		v = inflater.inflate(R.layout.activity_current_question, container,
 				false);
@@ -103,9 +106,10 @@ public class CurrentQuestionFragment extends Fragment {
 				updateQuestion(updatedQuestion);
 
 				showCurrentQuestionResult(comments, options, votes,
-						currentQuestion.getQuestionType());
-
+						currentQuestion.getQuestionType(), content);
 			}
+
+			
 
 			private void addSelectedOptions(java.util.List<Long> votes,
 					String questionType) {
@@ -250,7 +254,7 @@ public class CurrentQuestionFragment extends Fragment {
 
 	private void showCurrentQuestionResult(java.util.List<String> comments,
 			java.util.List<String> options, java.util.List<Long> votes,
-			String type) {
+			String type, String content) {
 
 		Intent resultIntent = new Intent(getActivity(),
 				SpecificResultsActivity.class);
@@ -266,6 +270,7 @@ public class CurrentQuestionFragment extends Fragment {
 			resultIntent.putIntegerArrayListExtra(UPDATED_QUESTION_VOTES, mVotes);
 		}
 		
+		resultIntent.putExtra(CURRENT_QUESTION_CONTENT, content);
 		resultIntent.putStringArrayListExtra(UPDATED_COMMENTS,
 				(ArrayList<String>) comments);
 		
@@ -273,7 +278,6 @@ public class CurrentQuestionFragment extends Fragment {
 		
 		startActivityForResult(resultIntent, REQUEST_CODE_FOR_RESULT);
 		// finishActivityFromChild(resultIntent, REQUEST_CODE_FOR_RESULT);
-
 	}
 
 	// private void finishActivityFromChild(Intent resultIntent,
@@ -313,7 +317,7 @@ public class CurrentQuestionFragment extends Fragment {
 						.get(currentQuestionIndex);
 				currentQuestionIndex++;
 				Log.d("AA", "current items: "
-						+ questions.getItems().get(0).getContent());
+						+ questions.getItems().get(currentQuestionIndex).getContent());
 
 			} catch (IOException e) {
 				Log.e("AA", "Failed loading: " + e);

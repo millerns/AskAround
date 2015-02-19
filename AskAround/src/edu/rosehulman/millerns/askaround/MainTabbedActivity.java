@@ -32,7 +32,7 @@ public class MainTabbedActivity extends Activity implements
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
-	ViewPager mViewPager;
+	public static ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

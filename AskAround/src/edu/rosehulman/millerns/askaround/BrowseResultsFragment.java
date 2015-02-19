@@ -50,12 +50,12 @@ public class BrowseResultsFragment extends Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Question question = mAdapter.getItem(position);
-		showCurrentQuestionResult(question.getComments(), question.getOptions(), question.getVotes(), question.getQuestionType());
+		showCurrentQuestionResult(question.getComments(), question.getOptions(), question.getVotes(), question.getQuestionType(), question.getContent());
 	}
 
 	private void showCurrentQuestionResult(java.util.List<String> comments,
 			java.util.List<String> options, java.util.List<Long> votes,
-			String type) {
+			String type, String content) {
 
 		Intent resultIntent = new Intent(getActivity(),
 				SpecificResultsActivity.class);
@@ -72,6 +72,9 @@ public class BrowseResultsFragment extends Fragment implements
 			resultIntent.putIntegerArrayListExtra(
 					CurrentQuestionFragment.UPDATED_QUESTION_VOTES, mVotes);
 		}
+		
+		resultIntent.putExtra(CurrentQuestionFragment.CURRENT_QUESTION_CONTENT, content);
+
 		
 		resultIntent.putStringArrayListExtra(
 				CurrentQuestionFragment.UPDATED_COMMENTS,

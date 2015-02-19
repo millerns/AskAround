@@ -26,17 +26,21 @@ public class SpecificResultsActivity extends Activity {
 	private ArrayList<String> mOptions;
 	private ArrayList<Integer> mVotes;
 	private String mQuestionType;
+	private String mQuestionContent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_specific_results);
-		
 		Intent intent = getIntent();
 		mComments = intent.getStringArrayListExtra(CurrentQuestionFragment.UPDATED_COMMENTS);
 		mOptions = intent.getStringArrayListExtra(CurrentQuestionFragment.UPDATED_QUESTION_OPTIONS);
 		mVotes = intent.getIntegerArrayListExtra(CurrentQuestionFragment.UPDATED_QUESTION_VOTES);
 		mQuestionType = intent.getStringExtra(CurrentQuestionFragment.CURRENT_QUESTION_TYPE);
+		mQuestionContent = intent.getStringExtra(CurrentQuestionFragment.CURRENT_QUESTION_CONTENT);
+		
+		TextView questionContent = (TextView) findViewById(R.id.specific_result_question_text_view);
+		questionContent.setText(mQuestionContent);
 		
 		showOptionsAndVotes();
 		setNextQustionButtonListener();	
@@ -49,7 +53,7 @@ public class SpecificResultsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				finish();
-				Log.d("AA", "next question button click");
+				Log.d("AA", "finish view spcific result");
 //				Fragment newFragment = new CurrentQuestionFragment();
 //				FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //
@@ -60,8 +64,27 @@ public class SpecificResultsActivity extends Activity {
 //
 //				// Commit the transaction
 //				transaction.commit();
+				//goToNextQuestion();
 			}
 		});
+	}
+	
+	private void goToNextQuestion() {
+		Fragment newFragment = new CurrentQuestionFragment();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(MainTabbedActivity.mViewPager.getCurrentItem(), newFragment);
+//		transaction.addToBackStack(null);
+		
+		transaction.addToBackStack(null);
+		//transaction.add(newFragment, "AA");
+		
+		Log.d("AA", "next question fragment generated");
+		// Commit the transaction
+		transaction.commit();
+		Log.d("AA", "go to next question");
 	}
 	
 	private void setQuestionTypeHint() {
