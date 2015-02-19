@@ -86,8 +86,10 @@ public class MainTabbedActivity extends Activity implements
 		if (id == R.id.ask_question) {
 			Intent intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
-		} else if (id == R.id.action_settings) {
-			return true;
+		} else if (id == R.id.next_question) {
+			SectionsPagerAdapter adapter = new SectionsPagerAdapter(
+					getFragmentManager());
+			mViewPager.setAdapter(adapter);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -117,7 +119,7 @@ public class MainTabbedActivity extends Activity implements
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public static final int CURRENT_QUESTION_SECTION = 0;
-		//public static final int ACTIVE_QUESTION_SECTION = 1;
+		// public static final int ACTIVE_QUESTION_SECTION = 1;
 		public static final int RESULTS_SECTION = 1;
 		private final int NUMBER_OF_TABS = 2;
 
@@ -132,8 +134,8 @@ public class MainTabbedActivity extends Activity implements
 			switch (position) {
 			case CURRENT_QUESTION_SECTION:
 				return new CurrentQuestionFragment();
-//			case ACTIVE_QUESTION_SECTION:
-//				return new ActiveQuestionFragment();
+				// case ACTIVE_QUESTION_SECTION:
+				// return new ActiveQuestionFragment();
 			case RESULTS_SECTION:
 				return new BrowseResultsFragment();
 			default:
@@ -153,8 +155,8 @@ public class MainTabbedActivity extends Activity implements
 			switch (position) {
 			case CURRENT_QUESTION_SECTION:
 				return "Current Question";
-//			case ACTIVE_QUESTION_SECTION:
-//				return "Active Questions";
+				// case ACTIVE_QUESTION_SECTION:
+				// return "Active Questions";
 			case RESULTS_SECTION:
 				return "Results";
 			}

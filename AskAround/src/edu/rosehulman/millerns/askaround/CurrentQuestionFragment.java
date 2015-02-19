@@ -308,7 +308,7 @@ public class CurrentQuestionFragment extends Fragment {
 				query.setLimit(50L);
 				questions = query.execute();
 				Log.d("AA", "got new questions: " + questions.size());
-				if (currentQuestionIndex == questions.size()) {
+				if (currentQuestionIndex == (questions.size() - 1)) {
 					popNoMoreQuestionDialog();
 					currentQuestionIndex--;
 				}
