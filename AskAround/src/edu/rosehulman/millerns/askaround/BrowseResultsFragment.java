@@ -110,10 +110,10 @@ public class BrowseResultsFragment extends Fragment implements
 
 			try {
 				List query = mService.question().list();
-				query.setOrder("create_date");
+				query.setOrder("-create_date");
 				query.setLimit(50L);
 				questions = query.execute();
-				Log.d("AA", "got new questions: " + questions.size());
+				Log.d("AA", "!from browse result!: " + questions.getItems().size());
 				Log.d("AA", "current items: "
 						+ questions.getItems().get(0).getContent());
 

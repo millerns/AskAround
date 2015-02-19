@@ -36,8 +36,12 @@ public class BrowseResultsViewAdapter extends ArrayAdapter<Question> {
 		Log.d("AA", "Current question content: " + mQuestions.get(position).getContent());
 		if (mQuestions.get(position).getVotes() != null)
 			rowView.setQuestionDueTime(Integer.toString(mQuestions.get(position).getVotes().size()));
+		else 
+			rowView.setQuestionDueTime(Integer.toString(0));
 		if (mQuestions.get(position).getComments() != null)
 			rowView.setQuestionHotness(Integer.toString(mQuestions.get(position).getComments().size()));
+		else
+			rowView.setQuestionHotness(Integer.toString(0));
 		
 		return rowView;
 	}

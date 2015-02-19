@@ -304,20 +304,20 @@ public class CurrentQuestionFragment extends Fragment {
 
 			try {
 				List query = mService.question().list();
-				query.setOrder("-create_date");
-				query.setLimit(50L);
+				query.setOrder("create_date");
+				//query.setLimit(50L);
 				questions = query.execute();
-				Log.d("AA", "got new questions: " + questions.size());
-				if (currentQuestionIndex == (questions.size() - 1)) {
+				Log.d("AA", "got new questions: " + questions.getItems().size());
+				if (currentQuestionIndex == questions.getItems().size()) {
 					popNoMoreQuestionDialog();
 					currentQuestionIndex--;
 				}
 
 				currentQuestion = questions.getItems()
 						.get(currentQuestionIndex);
-				currentQuestionIndex++;
 				Log.d("AA", "current items: "
 						+ questions.getItems().get(currentQuestionIndex).getContent());
+				currentQuestionIndex++;
 
 			} catch (IOException e) {
 				Log.e("AA", "Failed loading: " + e);

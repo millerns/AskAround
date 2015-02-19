@@ -54,37 +54,8 @@ public class SpecificResultsActivity extends Activity {
 			public void onClick(View v) {
 				finish();
 				Log.d("AA", "finish view spcific result");
-//				Fragment newFragment = new CurrentQuestionFragment();
-//				FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//				// Replace whatever is in the fragment_container view with this fragment,
-//				// and add the transaction to the back stack
-//				transaction.replace(R.id.pager, newFragment);
-//				transaction.addToBackStack(null);
-//
-//				// Commit the transaction
-//				transaction.commit();
-				//goToNextQuestion();
 			}
 		});
-	}
-	
-	private void goToNextQuestion() {
-		Fragment newFragment = new CurrentQuestionFragment();
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-		// Replace whatever is in the fragment_container view with this fragment,
-		// and add the transaction to the back stack
-		transaction.replace(MainTabbedActivity.mViewPager.getCurrentItem(), newFragment);
-//		transaction.addToBackStack(null);
-		
-		transaction.addToBackStack(null);
-		//transaction.add(newFragment, "AA");
-		
-		Log.d("AA", "next question fragment generated");
-		// Commit the transaction
-		transaction.commit();
-		Log.d("AA", "go to next question");
 	}
 	
 	private void setQuestionTypeHint() {
